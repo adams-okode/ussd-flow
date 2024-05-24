@@ -23,12 +23,12 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
-      - name: Lint with flake8
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - uses: pre-commit/action@v3.0.0
+        with:
+          extra_args: >-
+            --color=always
+            --from-ref ${{ github.event.pull_request.base.sha != '' && github.event.pull_request.base.sha || 'origin/main' }}
+            --to-ref ${{ github.event.pull_request.head.sha != '' && github.event.pull_request.head.sha || 'HEAD' }}
 
       - name: Test with pytest
         run: |
