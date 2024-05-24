@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "ussd-demo"
+version = "0.1.0"
+description = ""
+authors = ["Adams Okode <adamsokode@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sqlalchemy = "^2.0.30"
+pydantic = "^2.7.1"
+fastapi = "^0.111.0"
+redis = "^5.0.4"
+psycopg2-binary = "^2.9.9"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.1"
+pytest-mock = "^3.14.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
