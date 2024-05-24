@@ -1,17 +1,15 @@
-from contextlib import contextmanager
-import redis
-import os
 import json
-
+import os
+from abc import ABC, abstractmethod
+from contextlib import contextmanager
 from typing import Literal, Optional
-from sqlalchemy import create_engine, Column, String, Table, MetaData
+
+import redis
+from sqlalchemy import Column, MetaData, String, Table
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 
-from abc import ABC, abstractmethod
-
-from ussd_lib.models import USSDSession
+from lib.models import USSDSession
 
 
 class Cache(ABC):
@@ -157,16 +155,17 @@ class FileCache(Cache):
             self._write_cache(cache)
 
 
-from typing import Literal
-
-
 class CacheManager:
     """
-    CacheManager is a class that provides a unified interface for different types of caches.
-    Supported cache types are Redis, PostgreSQL, file-based caches, and custom cache objects.
+    CacheManager is a class that provides a unified interface
+    for different types of caches.
+    Supported cache types are Redis, PostgreSQL, file-based caches,
+    and custom cache objects.
 
-    :param cache_type: Specifies the type of cache to use. Must be one of 'redis', 'postgres', 'file', or 'custom'.
-    :param custom_cache: An optional custom cache object. If provided, it overrides the cache_type parameter.
+    :param cache_type: Specifies the type of cache to use. Must be one of
+    'redis', 'postgres', 'file', or 'custom'.
+    :param custom_cache: An optional custom cache object. If provided,
+    it overrides the cache_type parameter.
     :param kwargs: Additional keyword arguments specific to the chosen cache type.
 
     Keyword Arguments (kwargs):
@@ -192,8 +191,10 @@ class CacheManager:
         """
         Initialize the CacheManager.
 
-        :param cache_type: Specifies the type of cache to use ('redis', 'postgres', 'file', or 'custom').
-        :param custom_cache: An optional custom cache object. If provided, it overrides the cache_type parameter.
+        :param cache_type: Specifies the type of cache to use
+        ('redis', 'postgres', 'file', or 'custom').
+        :param custom_cache: An optional custom cache object. If provided,
+        it overrides the cache_type parameter.
         :param kwargs: Additional keyword arguments specific to the chosen cache type.
         """
         if custom_cache is not None:

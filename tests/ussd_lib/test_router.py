@@ -1,8 +1,10 @@
 # tests/test_ussd_service.py
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock
-from ussd_lib.models import IngressData, USSDSession, MenuLevel, MenuOption
-from ussd_lib.router import USSDService
+
+from lib.models import IngressData, MenuLevel, MenuOption, USSDSession
+from lib.router import USSDService
 
 
 @pytest.fixture
@@ -47,7 +49,7 @@ def sample_menus():
         "2": MenuLevel(
             id=2,
             menu_level=2,
-            text="CON Choose account information you want to view\n1. Account number\n2. Account balance",
+            text="CON Choose account information you want to view\n1. Account number\n2. Account balance",  # noqa
             menu_options=[
                 MenuOption(
                     type="response",
@@ -135,7 +137,7 @@ def test_ingress_valid(ussd_service):
     with patch.object(
         USSDService,
         "menu_level_router",
-        return_value="CON What would you like to check\n1. My account\n2. My phone number",
+        return_value="CON What would you like to check\n1. My account\n2. My phone number",  # noqa
     ):
         response = ussd_service.ingress(request)
         assert (
@@ -176,13 +178,13 @@ def test_menu_level_router(
     ) as mock_load_menus, patch.object(
         ussd_service,
         "process_menu_option",
-        return_value="CON Choose account information you want to view\n1. Account number\n2. Account balance",
+        return_value="CON Choose account information you want to view\n1. Account number\n2. Account balance",  # noqa
     ) as mock_process_menu_option:
         response = ussd_service.menu_level_router(request)
         mock_load_menus.assert_called_once()
         assert (
             response
-            == "CON Choose account information you want to view\n1. Account number\n2. Account balance"
+            == "CON Choose account information you want to view\n1. Account number\n2. Account balance"  # noqa
         )
         mock_process_menu_option.assert_called_once()
 
@@ -218,10 +220,10 @@ def test_process_menu_option_level(ussd_service, sample_session):
     with patch.object(
         USSDService,
         "get_menu",
-        return_value="CON Choose account information you want to view\n1. Account number\n2. Account balance",
+        return_value="CON Choose account information you want to view\n1. Account number\n2. Account balance",  # noqa
     ):
         response = ussd_service.process_menu_option(sample_session, menu_option)
         assert (
             response
-            == "CON Choose account information you want to view\n1. Account number\n2. Account balance"
+            == "CON Choose account information you want to view\n1. Account number\n2. Account balance"  # noqa
         )

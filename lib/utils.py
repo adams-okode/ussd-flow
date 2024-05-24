@@ -1,5 +1,5 @@
-from typing import Dict, Callable, Any, Tuple
 import inspect
+from typing import Callable, Dict, Tuple
 
 
 class ActionRegistry:

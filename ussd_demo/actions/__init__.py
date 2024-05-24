@@ -1,8 +1,8 @@
-from ussd_lib.utils import ActionRegistry
-
-action_registry = ActionRegistry()
+from lib.utils import ActionRegistry
 
 from . import account
+
+action_registry = ActionRegistry()
 
 
 __all__ = ["account"]

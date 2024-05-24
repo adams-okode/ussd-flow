@@ -2,9 +2,9 @@ import json
 from unittest.mock import MagicMock
 
 import pytest
-from sqlalchemy.dialects.postgresql import insert
-from ussd_lib.cache import CacheManager, PostgresCache
-from ussd_lib.models import USSDSession
+
+from lib.cache import CacheManager, PostgresCache
+from lib.models import USSDSession
 
 
 @pytest.fixture

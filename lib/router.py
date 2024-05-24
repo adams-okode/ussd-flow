@@ -1,10 +1,10 @@
 import importlib
 import json
-from typing import Optional, Union, List, Dict, Any
-from ussd_lib.cache import CacheManager
-from ussd_lib.models import IngressData, USSDSession, MenuLevel, MenuOption
-from ussd_lib.utils import ActionRegistry
-from ussd_demo.actions import action_registry
+from typing import Dict
+
+from lib.cache import CacheManager
+from lib.models import IngressData, MenuLevel, MenuOption, USSDSession
+from lib.utils import ActionRegistry
 
 
 class USSDService:
@@ -27,7 +27,8 @@ class USSDService:
 
     def load_menus(self) -> Dict[str, MenuLevel]:
         """
-        Load menus from a JSON file and return them as a dictionary of MenuLevel objects.
+        Load menus from a JSON file and return them as a dictionary
+        of MenuLevel objects.
 
         :return: Dictionary of menu levels.
         """

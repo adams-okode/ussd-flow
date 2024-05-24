@@ -1,5 +1,5 @@
 import pytest
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import sessionmaker
 
 

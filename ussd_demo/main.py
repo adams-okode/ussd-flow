@@ -1,16 +1,12 @@
 import logging
-
-
-import ussd_demo.actions.account
-
-from typing import Any, Dict
-from fastapi import Body, FastAPI, Request, Response
-
-from ussd_lib.models import IngressData
-from ussd_lib.router import USSDService
-from ussd_demo.actions import action_registry
+from typing import Any
 from urllib.parse import parse_qs, unquote_plus
 
+from fastapi import Body, FastAPI, Request, Response
+
+from lib.models import IngressData
+from lib.router import USSDService
+from ussd_demo.actions import action_registry
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
