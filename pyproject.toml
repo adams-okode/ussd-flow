@@ -4,6 +4,9 @@ version = "0.1.0"
 description = ""
 authors = ["Adams Okode <adamsokode@gmail.com>"]
 readme = "README.md"
+packages = [
+    { include = "ussd_lib" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -17,6 +20,8 @@ psycopg2-binary = "^2.9.9"
 pytest = "^8.2.1"
 pytest-mock = "^3.14.0"
 pytest-postgresql = "^6.0.0"
+pre-commit = "^3.7.1"
+pylint = "^3.2.2"
 
 [build-system]
 requires = ["poetry-core"]

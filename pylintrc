@@ -1,0 +1,23 @@
+[MASTER]
+ignore=.git,__pycache__,build,dist,.venv
+
+[MESSAGES CONTROL]
+disable=C0111,C0330,R0903,R0913,R0914,R0915
+
+[FORMAT]
+max-line-length=88
+
+[SIMILARITIES]
+min-similarity-lines=4
+
+[DESIGN]
+max-args=5
+max-attributes=10
+max-locals=15
+max-returns=6
+max-branches=12
+max-statements=50
+max-parents=7
+max-attributes=7
+min-public-methods=2
+max-public-methods=20
