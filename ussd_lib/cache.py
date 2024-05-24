@@ -1,10 +1,14 @@
+from contextlib import contextmanager
 import redis
 import os
 import json
 
-from typing import Literal
-from sqlalchemy import create_engine, Column, String, Table, MetaData, insert
+from typing import Literal, Optional
+from sqlalchemy import create_engine, Column, String, Table, MetaData
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import SQLAlchemyError
+
 from abc import ABC, abstractmethod
 
 from ussd_lib.models import USSDSession
@@ -43,8 +47,14 @@ class RedisCache(Cache):
 
 
 class PostgresCache(Cache):
-    def __init__(self, dsn=None, engine=None, cache_table="cache"):
-        self.engine = create_engine(dsn) if dsn is not None else engine
+    def __init__(self, sessionmaker, cache_table: str = "cache"):
+        """
+        Initialize the PostgresCache.
+
+        :param sessionmaker: SQLAlchemy sessionmaker instance.
+        :param cache_table: Name of the cache table.
+        """
+        self.Session = sessionmaker
         self.metadata = MetaData()
 
         self.cache_table = Table(
@@ -54,37 +64,60 @@ class PostgresCache(Cache):
             Column("value", String, nullable=False),
         )
 
-        self.metadata.create_all(self.engine)
-        self.Session = sessionmaker(bind=self.engine)
+        # Assuming the engine is associated with the sessionmaker
+        self.metadata.create_all(self.Session.kw["bind"])
 
-    def set(self, key, value: USSDSession):
+    @contextmanager
+    def session_scope(self):
+        """Provide a transactional scope around a series of operations."""
         session = self.Session()
+        try:
+            yield session
+            session.commit()
+        except SQLAlchemyError:
+            session.rollback()
+            raise
+        finally:
+            session.close()
 
+    def set(self, key: str, value):
+        """
+        Set a value in the cache.
+
+        :param key: The key under which the value is stored.
+        :param value: The value to store.
+        """
         stmt = insert(self.cache_table).values(key=key, value=value.model_dump_json())
-        # stmt = stmt.on_conflict_do_update(
-        #     index_elements=["key"],
-        #     set_=dict(value=value.model_dump_json()),
-        # )
+        stmt = stmt.on_conflict_do_update(
+            index_elements=["key"], set_={"value": value.model_dump_json()}
+        )
 
-        with session.begin():
+        with self.session_scope() as session:
             session.execute(stmt)
-        session.close()
 
-    def get(self, key):
-        session = self.Session()
-        result = session.execute(
-            self.cache_table.select().where(self.cache_table.c.key == key)
-        ).fetchone()
-        session.close()
-        return result["value"] if result else None
+    def get(self, key: str) -> str:
+        """
+        Get a value from the cache.
 
-    def delete(self, key):
-        session = self.Session()
-        with session.begin():
+        :param key: The key to look up.
+        :return: The cached value or None if the key does not exist.
+        """
+        with self.session_scope() as session:
+            result = session.execute(
+                self.cache_table.select().where(self.cache_table.c.key == key)
+            ).fetchone()
+            return result["value"] if result else None
+
+    def delete(self, key: str):
+        """
+        Delete a value from the cache.
+
+        :param key: The key to delete.
+        """
+        with self.session_scope() as session:
             session.execute(
                 self.cache_table.delete().where(self.cache_table.c.key == key)
             )
-        session.close()
 
 
 class FileCache(Cache):
@@ -124,23 +157,81 @@ class FileCache(Cache):
             self._write_cache(cache)
 
 
-class CacheManager:
-    def __init__(self, cache_type: Literal["redis", "postgres", "file"], **kwargs):
-        if cache_type == "redis":
-            self.cache = RedisCache(**kwargs)
-        elif cache_type == "postgres":
-            self.cache = PostgresCache(**kwargs)
-        elif cache_type == "file":
-            self.cache = FileCache(**kwargs)
-        else:
-            raise ValueError(f"Unsupported cache type: {cache_type}")
+from typing import Literal
 
-    def set(self, key, value: USSDSession) -> USSDSession:
+
+class CacheManager:
+    """
+    CacheManager is a class that provides a unified interface for different types of caches.
+    Supported cache types are Redis, PostgreSQL, file-based caches, and custom cache objects.
+
+    :param cache_type: Specifies the type of cache to use. Must be one of 'redis', 'postgres', 'file', or 'custom'.
+    :param custom_cache: An optional custom cache object. If provided, it overrides the cache_type parameter.
+    :param kwargs: Additional keyword arguments specific to the chosen cache type.
+
+    Keyword Arguments (kwargs):
+        - For RedisCache:
+            - client: Redis client instance.
+            - config: Configuration for Redis client.
+        - For PostgresCache:
+            - sessionmaker: SQLAlchemy sessionmaker instance.
+            - cache_table: Name of the cache table.
+        - For FileCache:
+            - file_path: Path to the file used for storing cache data.
+
+    Raises:
+        ValueError: If an unsupported cache type is provided.
+    """
+
+    def __init__(
+        self,
+        cache_type: Literal["redis", "postgres", "file", "custom"],
+        custom_cache: Optional[Cache] = None,
+        **kwargs,
+    ):
+        """
+        Initialize the CacheManager.
+
+        :param cache_type: Specifies the type of cache to use ('redis', 'postgres', 'file', or 'custom').
+        :param custom_cache: An optional custom cache object. If provided, it overrides the cache_type parameter.
+        :param kwargs: Additional keyword arguments specific to the chosen cache type.
+        """
+        if custom_cache is not None:
+            self.cache = custom_cache
+        else:
+            if cache_type == "redis":
+                self.cache = RedisCache(**kwargs)
+            elif cache_type == "postgres":
+                self.cache = PostgresCache(**kwargs)
+            elif cache_type == "file":
+                self.cache = FileCache(**kwargs)
+            else:
+                raise ValueError(f"Unsupported cache type: {cache_type}")
+
+    def set(self, key: str, value: USSDSession) -> USSDSession:
+        """
+        Set a value in the cache.
+
+        :param key: The key under which the value is stored.
+        :param value: The USSDSession object to store.
+        :return: The stored USSDSession object.
+        """
         self.cache.set(key, value)
         return value
 
-    def get(self, key) -> USSDSession | None:
+    def get(self, key: str) -> USSDSession | None:
+        """
+        Get a value from the cache.
+
+        :param key: The key to look up.
+        :return: The cached USSDSession object, or None if the key does not exist.
+        """
         return self.cache.get(key)
 
-    def delete(self, key):
+    def delete(self, key: str):
+        """
+        Delete a value from the cache.
+
+        :param key: The key to delete.
+        """
         self.cache.delete(key)
