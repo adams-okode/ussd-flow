@@ -98,6 +98,8 @@ class USSDService:
         menus = self.load_menus()
         session = self.get_or_create_session(request)
 
+        print(request.text)
+
         if request.text:
             return self.get_next_menu_item(session, menus)
         else:
@@ -162,6 +164,8 @@ class USSDService:
 
         functions = self._action_registry.get_decorated_functions()
 
+        print(functions)
+
         if menu_option.action in functions:
             func, module_name = functions[menu_option.action]
 
@@ -170,6 +174,7 @@ class USSDService:
 
             # Get the function from the module
             func_to_call = getattr(module, menu_option.action)
+            print(func_to_call)
 
             # Call the function with provided arguments
             variables_map = func_to_call()
@@ -189,7 +194,9 @@ class USSDService:
         :param response: Response string with placeholders.
         :return: Response string with placeholders replaced by actual values.
         """
+        print(variables_map.items())
         for key, value in variables_map.items():
+            print(key, value)
             response = response.replace(f"${{{key}}}", value)
         return response
 

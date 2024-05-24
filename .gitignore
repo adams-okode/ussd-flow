@@ -35,8 +35,9 @@ MANIFEST.in
 /tests/fixtures/project_with_extras/setup.py
 .mypy_cache
 
-env/*
-db_data/*
+env
+db_data
+cache.json
 .venv
 /releases/*
 pip-wheel-metadata
