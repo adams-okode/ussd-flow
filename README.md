@@ -15,15 +15,19 @@ Installation
 To install UssdFlow, simply use pip:
 
 ```bash
+
 pip install ussdflow
-Getting Started
+
 ```
+
+## Getting Started
 
 Here’s a quick example to get you started with UssdFlow:
 
 ```python
-from ussdflow import USSDService, CacheManager, IngressData
-
+from ussdflow.ussd_lib.cache import CacheManager
+from ussdflow.ussd_lib.models import IngressData
+from ussdflow.ussd_lib.router import USSDService
 # Initialize the cache manager
 
 cache_manager = CacheManager(cache_type="redis", host="localhost", port=6379)
@@ -50,14 +54,14 @@ response = ussd_service.ingress(request)
 print(response)
 ```
 
-## Documentation
-
+<!-- ## Documentation
 Comprehensive documentation is available to guide you through the installation, configuration, and usage of UssdFlow. Check the UssdFlow Documentation for detailed information.
+-->
 
 ## Contributing
 
-We welcome contributions to UssdFlow! If you have suggestions, bug reports, or want to contribute code, please check our Contributing Guidelines.
+We welcome contributions to UssdFlow! If you have suggestions, bug reports, or want to contribute code, please check our [Contributing Guidelines](./CONTRIBUTING.md).
 
 ## License
 
-UssdFlow is licensed under the MIT License. See the LICENSE file for more details.
+UssdFlow is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
