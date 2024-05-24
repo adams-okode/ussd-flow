@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ussd-demo"
+name = "ussdflow"
 version = "0.1.0"
 description = ""
 authors = ["Adams Okode <adamsokode@gmail.com>"]
