@@ -110,7 +110,7 @@ onMounted(() => {
 
     <slot name="side-bar"> </slot>
 
-    <main>
+    <main style="height: calc(100vh - 70px)">
       <slot name="flow">
         <!-- Main modal -->
       </slot>

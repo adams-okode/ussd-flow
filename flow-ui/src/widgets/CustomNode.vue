@@ -3,8 +3,8 @@ import { mdiAdjust } from "@mdi/js";
 import { Handle, Position } from "@vue-flow/core";
 import { toRef } from "vue";
 
-import { useDialogStore } from "../stores/phone-dialog";
 import SvgIcon from "@jamescoyle/vue-icon";
+import { useMenuStore } from "../stores/menu";
 
 const props = defineProps([
   "data",
@@ -29,15 +29,15 @@ const props = defineProps([
   "zIndex",
 ]);
 
-const dialogStore = useDialogStore();
+const menuStore = useMenuStore();
 
-const { showDialog, setMenuData } = dialogStore;
+const { showSideMenu, setSelectedMenuLevel } = menuStore;
 
 const data = toRef(props);
 
 function openDialog() {
-  showDialog();
-  setMenuData(data.value.data);
+  showSideMenu();
+  setSelectedMenuLevel(data.value.data.id);
 }
 </script>
 

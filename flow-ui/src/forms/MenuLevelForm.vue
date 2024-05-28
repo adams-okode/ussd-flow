@@ -1,12 +1,17 @@
 <template>
-  <Vueform v-model="menuLevel" sync :endpoint="false" @submit="handleSubmit">
+  <Vueform
+    v-model="localMenuLevel"
+    sync
+    :endpoint="false"
+    @submit="handleSubmit"
+  >
     <text-element
       name="id"
-      label="Menu Level"
+      label="Menu ID"
       input-type="number"
       validation="required"
       description="The Generate"
-      :readonly="true"
+      :disabled="true"
     />
 
     <text-element
@@ -49,13 +54,17 @@
             label="Response"
             input-type="text"
           />
-          <text-element
+          <select-element
             :name="'nextMenuLevel'"
             label="Next Menu Level"
-            input-type="number"
+            label-prop="text"
+            value-prop="id"
+            :items="menusList"
+            :truncate="true"
+            :native="false"
           />
           <text-element
-            v-if="menuLevel?.menuOptions[index].action == 'action'"
+            v-if="localMenuLevel?.menuOptions[index]?.type === 'action'"
             :name="'action'"
             label="Action"
             type="text"
@@ -72,10 +81,6 @@
       size="lg"
     />
   </Vueform>
-
-  <!-- <pre>
-    {{ menuLevel }}
-  </pre> -->
 </template>
 
 <script setup lang="ts">
@@ -83,36 +88,27 @@ import { Ref, computed } from "vue";
 import { MenuLevel } from "../types/ussd";
 import { useMenuStore } from "../stores/menu";
 import { useDialogStore } from "../stores/phone-dialog";
+import { storeToRefs } from "pinia";
 
 const dialogStore = useDialogStore();
 const { hideDialog } = dialogStore;
 
 const menuStore = useMenuStore();
+const { mainMenu } = storeToRefs(menuStore);
 const { getNextMenuLevelID, addNewMenuItem } = menuStore;
 
 // Define props and emits for v-model
-const props = defineProps({
-  modelValue: {
-    type: Object as () => MenuLevel,
-    default: () => ({
-      id: "",
-      menuLevel: "",
-      text: "",
-      menuOptions: [],
-      maxSelections: "",
-      action: "",
-    }),
-  },
-});
+const props = defineProps<{
+  modelValue: MenuLevel;
+}>();
 const emit = defineEmits(["update:modelValue"]);
 
-const menuLevel: Ref<MenuLevel> = computed({
-  get: () => {
-    console.log(props.modelValue);
-    return props.modelValue;
-  },
+const menusList = computed(() => Object.values(mainMenu.value));
+
+const localMenuLevel: Ref<MenuLevel> = computed({
+  get: () => props.modelValue,
   set: (value) => {
-    if (value.id == null) {
+    if (!value.id) {
       value.id = getNextMenuLevelID();
     }
     emit("update:modelValue", value);
@@ -120,7 +116,7 @@ const menuLevel: Ref<MenuLevel> = computed({
 });
 
 function handleSubmit() {
-  addNewMenuItem(menuLevel.value);
+  addNewMenuItem(localMenuLevel.value);
   hideDialog();
 }
 </script>
