@@ -30,8 +30,8 @@
 
         <div>
           <pre ref="codeBlock" class="language-json h-full">
-            {{ formattedMenu }}
-        </pre
+              {{ formattedMenu }}
+            </pre
           >
           <div class="handle shadow-sm" @mousedown="startResize"></div>
         </div>
@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount } from "vue";
+import { ref, watch, onMounted, onBeforeUnmount, Ref } from "vue";
 import { useMenuStore } from "../stores/menu";
 import { storeToRefs } from "pinia";
 import Prism from "prismjs";
@@ -71,22 +71,21 @@ const { mainMenu, previewSideNavToggle } = storeToRefs(menuStore);
 const { hidePreviewSideNav } = menuStore;
 
 const codeBlock = ref<HTMLElement | null>(null);
-
 const formattedMenu = ref("");
 
 const width = ref(1000); // Initial width of the resizable div
 const isResizing = ref(false);
-const resizableBox = ref(null);
+const resizableBox: Ref<any> = ref(null);
 
-const startResize = (event: Event) => {
+const startResize = (event: any) => {
   isResizing.value = true;
   document.addEventListener("mousemove", resize);
   document.addEventListener("mouseup", stopResize);
 };
 
-const resize = (event) => {
+const resize = (event: any) => {
   if (isResizing.value) {
-    width.value = event.clientX - resizableBox.value.offsetLeft;
+    width.value = event.clientX - resizableBox.value?.offsetLeft;
   }
 };
 
@@ -102,14 +101,14 @@ function highlightCode() {
   }
 }
 
-watch(
-  mainMenu,
-  (newMenu) => {
-    formattedMenu.value = JSON.stringify(newMenu, null, "\t"); // Format JSON with indentation
-    highlightCode();
-  },
-  { immediate: true }
-);
+// watch(
+//   mainMenu,
+//   (newMenu) => {
+//     formattedMenu.value = JSON.stringify(newMenu, null, "\t"); // Format JSON with indentation
+//     highlightCode();
+//   },
+//   { immediate: true, deep: true }
+// );
 
 onMounted(() => {
   highlightCode();

@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import HelloWorld from "./widgets/HelloWorld.vue";
+import MenuBuilder from "./widgets/MenuBuilder.vue";
 import MainLayout from "./layout/MainLayout.vue";
 import PhoneDialog from "./widgets/PhoneDialog.vue";
 import SideBar from "./widgets/SideBar.vue";
+import ToastComponent from "./components/ToastComponent.vue";
 
 import { mdiPlus, mdiEyeOutline, mdiDownloadBoxOutline } from "@mdi/js";
+
+// @ts-ignore:next-line
 import SvgIcon from "@jamescoyle/vue-icon";
 
 import { useMenuStore } from "./stores/menu";
@@ -12,16 +15,23 @@ import { storeToRefs } from "pinia";
 
 const menuStore = useMenuStore();
 const { previewSideNavToggle } = storeToRefs(menuStore);
-const { showSideMenu, showPreviewSideNav, setSelectedMenuLevel, exportToJson } =
-  menuStore;
+const {
+  showSideMenu,
+  showPreviewSideNav,
+  setSelectedMenuLevel,
+  exportToJson,
+  addNewMenuItem,
+} = menuStore;
 
 function createMenuDialog() {
+  const mewMenu = addNewMenuItem();
   showSideMenu();
-  setSelectedMenuLevel(null);
+  setSelectedMenuLevel(mewMenu.id);
 }
 </script>
 
 <template>
+  <toast-component></toast-component>
   <div class="fixed right-3 top-20 z-50 block max-w-2xl rounded-lg">
     <button
       data-tooltip-target="tooltip-default"
@@ -86,7 +96,7 @@ function createMenuDialog() {
     </template>
 
     <template #flow>
-      <hello-world></hello-world>
+      <menu-builder></menu-builder>
     </template>
   </main-layout>
 </template>

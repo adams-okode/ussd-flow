@@ -13,8 +13,8 @@ import { useMenuStore } from "../stores/menu";
 import { storeToRefs } from "pinia";
 
 const menuStore = useMenuStore();
-const { menuGraph } = storeToRefs(menuStore);
-// const { getNextMenuLevelID, addNewMenuItem } = menuStore;
+const { menuGraph, mainMenu } = storeToRefs(menuStore);
+const { generateGraph, setMenuGraph } = menuStore;
 
 /**
  * useVueFlow provides all event handlers and store properties
@@ -127,6 +127,16 @@ function findNewItems(newItems: any[], oldItems: any[], idKey = "id") {
     (newItem) => !oldItems.some((oldItem) => oldItem[idKey] === newItem[idKey])
   );
 }
+
+watch(
+  mainMenu,
+  (newMenu, oldMenu) => {
+    if (!oldMenu) return;
+    const menuGraph = generateGraph(newMenu);
+    setMenuGraph(menuGraph);
+  },
+  { deep: true }
+);
 
 // Watcher to detect changes in the graph
 watch(

@@ -2,6 +2,7 @@
 import { mdiAdjust } from "@mdi/js";
 import { Handle, Position } from "@vue-flow/core";
 import { toRef } from "vue";
+import { storeToRefs } from "pinia";
 
 import SvgIcon from "@jamescoyle/vue-icon";
 import { useMenuStore } from "../stores/menu";
@@ -30,7 +31,7 @@ const props = defineProps([
 ]);
 
 const menuStore = useMenuStore();
-
+const { mainMenu } = storeToRefs(menuStore);
 const { showSideMenu, setSelectedMenuLevel } = menuStore;
 
 const data = toRef(props);
@@ -43,7 +44,7 @@ function openDialog() {
 
 <template>
   <div class="process-node" @click="openDialog">
-    <div class="preformatted">{{ data.label }}</div>
+    <div class="preformatted">{{ mainMenu[data.id]?.text }}</div>
     <Handle type="target" :position="Position.Left">
       <span>
         <svg-icon type="mdi" :path="mdiAdjust" size="10"></svg-icon>
