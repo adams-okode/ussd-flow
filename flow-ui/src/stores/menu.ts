@@ -91,9 +91,11 @@ export const useMenuStore = defineStore("menu", () => {
 
     const jsonString = JSON.stringify(mainMenu.value, null, 2); // Pretty print JSON
 
+    // @ts-ignore: next-line
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       // For IE browser
       const blob = new Blob([jsonString], { type: contentType });
+      // @ts-ignore: next-line
       window.navigator.msSaveOrOpenBlob(blob, fileName);
     } else {
       //   console.log(jsonString, fileName);

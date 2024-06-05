@@ -35,6 +35,7 @@ const props = defineProps([
   "targetPosition",
   "type",
   "zIndex",
+  "toolbarVisible",
 ]);
 
 const menuStore = useMenuStore();

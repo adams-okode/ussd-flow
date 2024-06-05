@@ -29,6 +29,8 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from "vue";
 import { mdiClose } from "@mdi/js";
+
+// @ts-ignore: next-line
 import SvgIcon from "@jamescoyle/vue-icon";
 
 const emit = defineEmits(["close"]);
@@ -37,15 +39,16 @@ const width = ref(1000); // Initial width of the resizable div
 const isResizing = ref(false);
 const resizableBox = ref(null);
 
-const startResize = (event: Event) => {
+const startResize = () => {
   isResizing.value = true;
   document.addEventListener("mousemove", resize);
   document.addEventListener("mouseup", stopResize);
 };
 
-const resize = (event) => {
+const resize = (event: any) => {
   if (isResizing.value) {
-    width.value = event.clientX - resizableBox.value.offsetLeft;
+    // @ts-ignore: next-line
+    width.value = event.clientX - resizableBox.value?.offsetLeft;
   }
 };
 

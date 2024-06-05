@@ -195,7 +195,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, computed, ref, watch } from "vue";
+import { Ref, computed, ref } from "vue";
 import { MenuLevel, MenuOption } from "../types/ussd";
 import { useMenuStore } from "../stores/menu";
 import { storeToRefs } from "pinia";
@@ -236,26 +236,6 @@ const localMenuLevel: Ref<MenuLevel> = computed({
     emit("update:modelValue", value);
   },
 });
-
-// Watchers to update text and response based on conEnd checkbox
-// watch(
-//   () => localMenuLevel.value.conEnd,
-//   (newValue) => {
-//     console.log(newValue);
-//     let text = localMenuLevel.value?.text ?? "";
-
-//     // Remove any initial undefined values or extra spaces
-//     text = text.replace(/^undefined\s*/, "").trim();
-
-//     const prefix = /^(CON|END)\b/i.test(text) ? "" : newValue ? "CON" : "END";
-
-//     localMenuLevel.value.text = `${prefix} ${text}`.trim();
-//   }
-// );
-
-function updateOptionConEnd(option: MenuOption) {
-  option.response = `${option.conEnd ? "CON" : "END"} ${option.response}`;
-}
 
 function addMenuOption() {
   localMenuLevel.value.menuOptions.push({ ...defaultMenuOption.value });

@@ -72,13 +72,7 @@ const { showToast } = toastStore;
 const menuStore = useMenuStore();
 const { showMenuSidenav, selectedMenuLevelId, mainMenu } =
   storeToRefs(menuStore);
-const {
-  hideSideMenu,
-  getNextMenuLevelID,
-  addNewMenuItem,
-  showSideMenu,
-  setSelectedMenuLevel,
-} = menuStore;
+const { hideSideMenu, getNextMenuLevelID, addNewMenuItem } = menuStore;
 
 const metadata = computed({
   get() {
@@ -111,12 +105,6 @@ const metadata = computed({
     return value;
   },
 });
-
-function createMenuDialog() {
-  const mewMenu = addNewMenuItem();
-  showSideMenu();
-  setSelectedMenuLevel(mewMenu.id);
-}
 
 function saveMenuItem() {
   addNewMenuItem(metadata.value);
