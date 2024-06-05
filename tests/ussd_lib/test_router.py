@@ -21,7 +21,7 @@ def mock_action_registry():
 @pytest.fixture
 def ussd_service(mock_cache_manager, mock_action_registry):
     return USSDService(
-        menu_file_path="tests/data/menu.json",
+        menu_file_path="data/menu.json",
         cache_manager=mock_cache_manager,
         actions_registry=mock_action_registry,
     )
@@ -29,7 +29,7 @@ def ussd_service(mock_cache_manager, mock_action_registry):
 
 @pytest.fixture
 def sample_menus():
-    with open("tests/data/menu.json", "r") as file:
+    with open("data/menu.json", "r") as file:
         content = file.read()
     menu_dict = json.loads(content)
     return {key: MenuLevel(**value) for key, value in menu_dict.items()}

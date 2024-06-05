@@ -5,16 +5,18 @@ from urllib.parse import parse_qs, unquote_plus
 
 from fastapi import Body, FastAPI, Request, Response
 
+from fastapi_demo.actions import get_action_registry
 from lib.models import IngressData
 from lib.router import USSDService
-from ussd_demo.actions import get_action_registry
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
 
 # Initialize the USSDService with the action registry
 action_registry = get_action_registry()
-ussd_service = USSDService(actions_registry=action_registry)
+ussd_service = USSDService(
+    menu_file_path="data/menu.json", actions_registry=action_registry
+)
 
 
 @app.api_route("/actions", methods=["GET"])

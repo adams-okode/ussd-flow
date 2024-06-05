@@ -1,5 +1,5 @@
 # ussd_demo/actions/account.py
-from ussd_demo.actions import action_registry
+from fastapi_demo.actions import action_registry
 
 
 # Define handler functions at the module level and use the decorator

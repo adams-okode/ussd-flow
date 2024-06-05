@@ -203,5 +203,5 @@ class USSDService:
         """
 
         for key, value in variables_map.items():
-            response = response.replace(f"${{{key}}}", value)
+            response = response.replace(f"${{{key}}}", str(value))
         return response
