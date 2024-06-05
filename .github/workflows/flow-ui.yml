@@ -44,15 +44,6 @@ jobs:
         run: npm run build
         working-directory: ./flow-ui
 
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./flow-ui/dist
-          destination: ./_site
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-
 
   deploy:
     environment:
@@ -61,6 +52,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+            # Upload entire repository
+            path: './flow-ui/dist'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
