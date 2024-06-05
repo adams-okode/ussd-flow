@@ -179,7 +179,6 @@ onMounted(() => {});
           :nodes="nodes"
           :edges="edges"
           :class="{ dark }"
-          :fit-view-on-init="true"
           class="basicflow"
         >
           <template #node-input="props">

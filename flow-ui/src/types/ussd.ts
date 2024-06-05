@@ -3,6 +3,7 @@ export interface MenuOption {
   response?: string;
   nextMenuLevel?: string | null;
   action?: string;
+  conEnd?: boolean;
 }
 
 export interface MenuLevel {
@@ -12,6 +13,7 @@ export interface MenuLevel {
   menuOptions: MenuOption[];
   maxSelections: number | string;
   action?: string;
+  conEnd?: boolean;
 }
 
 export interface USSDSession {

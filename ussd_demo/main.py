@@ -1,3 +1,4 @@
+# ussd_demo/main.py
 import logging
 from typing import Any
 from urllib.parse import parse_qs, unquote_plus
@@ -6,11 +7,19 @@ from fastapi import Body, FastAPI, Request, Response
 
 from lib.models import IngressData
 from lib.router import USSDService
-from ussd_demo.actions import action_registry
+from ussd_demo.actions import get_action_registry
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
+
+# Initialize the USSDService with the action registry
+action_registry = get_action_registry()
 ussd_service = USSDService(actions_registry=action_registry)
+
+
+@app.api_route("/actions", methods=["GET"])
+def list_actions(request: Request):
+    return action_registry.get_decorated_functions_jsonable()
 
 
 @app.api_route("/events", methods=["POST"])

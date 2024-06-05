@@ -1,39 +1,45 @@
 {
   "1": {
-    "id": 230,
+    "id": 1,
     "menu_level": 1,
-    "text": "CON What would you like to check\n1. My account\n2. My phone number",
+    "text": "What would you like to check\n1. My account\n2. My phone number",
+    "con_end": true,
     "menu_options": [
       {
         "type": "level",
         "response": null,
         "next_menu_level": 2,
+        "con_end": true,
         "action": null
       },
       {
         "type": "response",
-        "response": "END Your Phone Number is ${phone_number}",
+        "response": "Your Phone Number is ${phone_number}",
         "next_menu_level": null,
+        "con_end": false,
         "action": "process_account_phone_number"
       }
     ],
     "max_selections": 3
   },
   "2": {
-    "id": 230,
+    "id": 2,
     "menu_level": 2,
-    "text": "CON Choose account information you want to view\n1. Account number\n2. Account balance",
+    "con_end": true,
+    "text": "Choose account information you want to view\n1. Account number\n2. Account balance",
     "menu_options": [
       {
         "type": "response",
-        "response": "END Your account number is ${account_number}",
+        "response": "Your account number is ${account_number}",
         "next_menu_level": null,
+        "con_end": false,
         "action": "process_account_number"
       },
       {
         "type": "response",
-        "response": "END Your Account balance is ${account_balance}",
+        "response": "Your Account balance is ${account_balance}",
         "next_menu_level": null,
+        "con_end": false,
         "action": "process_account_balance"
       }
     ],

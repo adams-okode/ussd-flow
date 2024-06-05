@@ -37,7 +37,11 @@ export const useMenuStore = defineStore("menu", () => {
     if (!menuLevel.id) {
       menuLevel.id = getNextMenuLevelID();
       menuLevel.menuOptions = [<MenuOption>{}];
-      menuLevel.menuLevel = calculateNextMenuLevel(mainMenu.value);
+      menuLevel.menuLevel = calculateNextMenuLevel(
+        selectedMenuLevelId.value
+          ? mainMenu.value[selectedMenuLevelId.value]
+          : null
+      );
       selectedMenuLevelId.value = menuLevel.id;
     }
 
@@ -73,6 +77,12 @@ export const useMenuStore = defineStore("menu", () => {
 
   function setSelectedMenuLevel(menuId: string | null) {
     selectedMenuLevelId.value = menuId;
+  }
+
+  function removeMenuLevel(menuId: string | null) {
+    if (menuId && menuId in mainMenu.value) {
+      delete mainMenu.value[menuId];
+    }
   }
 
   function exportToJson(fileName: string = "export.json") {
@@ -119,5 +129,6 @@ export const useMenuStore = defineStore("menu", () => {
     addNewMenuItem,
     hideSideMenu,
     showSideMenu,
+    removeMenuLevel,
   };
 });

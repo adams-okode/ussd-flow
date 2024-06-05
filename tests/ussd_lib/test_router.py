@@ -1,4 +1,5 @@
 # tests/test_ussd_service.py
+import json
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -28,45 +29,10 @@ def ussd_service(mock_cache_manager, mock_action_registry):
 
 @pytest.fixture
 def sample_menus():
-    return {
-        "1": MenuLevel(
-            id="1",
-            menu_level=1,
-            text="CON What would you like to check\n1. My account\n2. My phone number",
-            menu_options=[
-                MenuOption(
-                    type="level", response=None, next_menu_level="2", action=None
-                ),
-                MenuOption(
-                    type="response",
-                    response="END Your Phone Number is ${phone_number}",
-                    next_menu_level=None,
-                    action="process_account_phone_number",
-                ),
-            ],
-            max_selections=2,
-        ),
-        "2": MenuLevel(
-            id=2,
-            menu_level=2,
-            text="CON Choose account information you want to view\n1. Account number\n2. Account balance",  # noqa
-            menu_options=[
-                MenuOption(
-                    type="response",
-                    response="END Your account number is ${account_number}",
-                    next_menu_level=None,
-                    action="process_account_number",
-                ),
-                MenuOption(
-                    type="response",
-                    response="END Your Account balance is ${account_balance}",
-                    next_menu_level=None,
-                    action="process_account_balance",
-                ),
-            ],
-            max_selections=2,
-        ),
-    }
+    with open("tests/data/menu.json", "r") as file:
+        content = file.read()
+    menu_dict = json.loads(content)
+    return {key: MenuLevel(**value) for key, value in menu_dict.items()}
 
 
 @pytest.fixture
@@ -175,18 +141,14 @@ def test_menu_level_router(
         USSDService,
         "load_menus",
         return_value=sample_menus,
-    ) as mock_load_menus, patch.object(
-        ussd_service,
-        "process_menu_option",
-        return_value="CON Choose account information you want to view\n1. Account number\n2. Account balance",  # noqa
-    ) as mock_process_menu_option:
+    ) as mock_load_menus:
         response = ussd_service.menu_level_router(request)
-        mock_load_menus.assert_called_once()
+        mock_load_menus.assert_called()
         assert (
             response
             == "CON Choose account information you want to view\n1. Account number\n2. Account balance"  # noqa
         )
-        mock_process_menu_option.assert_called_once()
+        # mock_process_menu_option.assert_called_once()
 
 
 def test_process_menu_option_response(
@@ -203,7 +165,7 @@ def test_process_menu_option_response(
 
         menu_option = MenuOption(
             type="response",
-            response="END Your Phone Number is ${phone_number}",
+            response="Your Phone Number is ${phone_number}",
             next_menu_level=None,
             action="process_account_phone_number",
         )

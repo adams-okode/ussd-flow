@@ -11,7 +11,7 @@ type ToastConfig = {
 export const useToastStore = defineStore("toast", () => {
   const defaultConfig: ToastConfig = {
     toggle: false,
-    closeDelay: 3000,
+    closeDelay: 5000,
     severity: "info",
     message: "",
   };

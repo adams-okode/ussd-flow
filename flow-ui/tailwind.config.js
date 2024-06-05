@@ -9,7 +9,11 @@ export default {
     "./node_modules/@vueform/vueform/themes/tailwind/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+        zIndex: {
+            'on-top': '10000',
+          }
+    },
   },
   plugins: [require("flowbite/plugin"), require("@vueform/vueform/tailwind")],
   darkMode: "class",

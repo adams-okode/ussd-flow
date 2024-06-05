@@ -8,6 +8,7 @@ class MenuOption(BaseModel):
     response: Optional[str]
     next_menu_level: Optional[Union[int, str, None]]
     action: Optional[str]
+    con_end: bool = False
 
 
 class MenuLevel(BaseModel):
@@ -17,6 +18,7 @@ class MenuLevel(BaseModel):
     menu_options: List[MenuOption]
     max_selections: Union[int, str]
     action: Optional[str] = None
+    con_end: bool = False
 
 
 class USSDSession(BaseModel):
@@ -25,8 +27,8 @@ class USSDSession(BaseModel):
     service_code: str
     phone_number: str
     text: str
-    previous_menu_level: Union[int, str]
-    current_menu_level: Union[int, str]
+    previous_menu_level: Union[int, str, None]
+    current_menu_level: Union[int, str, None]
 
 
 class IngressData(BaseModel):

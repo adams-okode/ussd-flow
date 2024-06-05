@@ -11,7 +11,7 @@
         placeholder="Search..."
         @focus="showDropdown = true"
         @blur="hideDropdown"
-        class="block w-full py-2 pl-3 pr-10 mt-1 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        class="block w-full py-2 pl-3 pr-10 mt-1 text-base border border-gray-300 rounded-md dark:bg-slate-600 dark:text-gray-200 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       />
       <span
         class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer pointer-events-none"
@@ -27,7 +27,7 @@
       </span>
       <div v-if="showDropdown" class="relative mt-1">
         <ul
-          class="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white border border-gray-300 rounded-md shadow-lg max-h-60 focus:outline-none sm:text-sm"
+          class="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white border border-gray-300 rounded-md shadow-lg max-h-60 focus:outline-none sm:text-sm dark:bg-slate-600 dark:text-gray-200"
           tabindex="-1"
         >
           <li
@@ -38,7 +38,7 @@
               'text-gray-900': item[valueProp] !== modelValue,
             }"
             @mousedown.prevent="selectItem(item)"
-            class="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-indigo-200"
+            class="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-indigo-200 dark:text-gray-200"
           >
             <span
               :class="{
@@ -59,6 +59,8 @@
 <script setup lang="ts">
 import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import { mdiClose, mdiChevronDown } from "@mdi/js";
+
+// @ts-ignore: next-line
 import SvgIcon from "@jamescoyle/vue-icon";
 
 const props = defineProps<{

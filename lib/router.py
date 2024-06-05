@@ -99,12 +99,13 @@ class USSDService:
         menus = self.load_menus()
         session = self.get_or_create_session(request)
 
-        print(request.text)
-
         if request.text:
             return self.get_next_menu_item(session, menus)
         else:
-            return menus[session.current_menu_level].text
+            con_end = menus[session.current_menu_level].con_end
+            return "{} {}".format(
+                "CON" if con_end else "END", menus[session.current_menu_level].text
+            )
 
     def get_next_menu_item(
         self, session: USSDSession, menus: Dict[str, MenuLevel]
@@ -150,7 +151,12 @@ class USSDService:
         :return: Text of the specified menu level.
         """
         menus = self.load_menus()
-        return menus[str(menu_level)].text
+        con_end = menus[str(menu_level)].con_end
+
+        return "{} {}".format(
+            "CON" if con_end else "END",
+            menus[str(menu_level)].text,
+        )
 
     def process_menu_option_responses(self, menu_option: MenuOption) -> str:
         """
@@ -159,13 +165,11 @@ class USSDService:
         :param menu_option: MenuOption object selected by the user.
         :return: Response string to be sent back to the user.
         """
-
-        response = menu_option.response
         variables_map = {}
+        response = menu_option.response
+        con_end = menu_option.con_end
 
         functions = self._action_registry.get_decorated_functions()
-
-        print(functions)
 
         if menu_option.action in functions:
             func, module_name = functions[menu_option.action]
@@ -175,7 +179,6 @@ class USSDService:
 
             # Get the function from the module
             func_to_call = getattr(module, menu_option.action)
-            print(func_to_call)
 
             # Call the function with provided arguments
             variables_map = func_to_call()
@@ -184,7 +187,10 @@ class USSDService:
                 f"Function '{menu_option.action}' is not registered in the registry."
             )
 
-        return self.replace_variable(variables_map, response)
+        return "{} {}".format(
+            "CON" if con_end else "END",
+            self.replace_variable(variables_map, response),
+        )
 
     @staticmethod
     def replace_variable(variables_map: Dict[str, str], response: str) -> str:
@@ -195,24 +201,7 @@ class USSDService:
         :param response: Response string with placeholders.
         :return: Response string with placeholders replaced by actual values.
         """
-        print(variables_map.items())
+
         for key, value in variables_map.items():
-            print(key, value)
             response = response.replace(f"${{{key}}}", value)
         return response
-
-
-# Example usage
-# if __name__ == "__main__":
-#     ussd_service = USSDService()
-
-#     request_data = IngressData(
-#         session_id="session123",
-#         service_code="*123#",
-#         phone_number="123456789",
-#         text="",
-#         network_code="99999",
-#     )
-
-#     response = ussd_service.ingress(request_data)
-#     print(response)

@@ -13,6 +13,8 @@ import {
   initTabs,
   initTooltips,
 } from "flowbite";
+
+// @ts-ignore: next-line
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiMoonWaxingCrescent, mdiWeatherSunny } from "@mdi/js";
 
@@ -66,8 +68,9 @@ onMounted(() => {
           <a href="#" class="flex items-center">
             <span
               class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-              >USSD FLow</span
             >
+              USSD Flow
+            </span>
           </a>
           <div class="flex items-center lg:order-2">
             <a

@@ -6,25 +6,16 @@ export function loadMenus() {
   return generateGraph(convertToCamelCase(menu) as Record<string, MenuLevel>);
 }
 
-export function calculateNextMenuLevel(
-  data: Record<string, MenuLevel>
-): number {
-  let maxMenuLevel = 0;
+export function calculateNextMenuLevel(data: MenuLevel | null): number {
+  if (data) {
+    const level =
+      typeof data.menuLevel === "string"
+        ? parseInt(data.menuLevel)
+        : data.menuLevel;
 
-  for (const key in data) {
-    if (data.hasOwnProperty(key)) {
-      const menuLevel = data[key];
-      const level =
-        typeof menuLevel.menuLevel === "string"
-          ? parseInt(menuLevel.menuLevel)
-          : menuLevel.menuLevel;
-      if (level > maxMenuLevel) {
-        maxMenuLevel = level;
-      }
-    }
+    return level + 1;
   }
-
-  return maxMenuLevel + 1;
+  return 1;
 }
 
 export function generateGraph(data: Record<string, MenuLevel>): {
@@ -86,9 +77,9 @@ export function generateGraph(data: Record<string, MenuLevel>): {
     total: number
   ): number {
     const parentNode = nodePositions[parentId];
-    if (!parentNode) return index * 100;
+    if (!parentNode) return index * 150;
     const parentY = parentNode.y;
-    const offset = (index - (total - 1) / 2) * 100;
+    const offset = (index - (total - 1) / 2) * 150;
     return parentY + offset;
   }
 
@@ -116,7 +107,7 @@ export function generateGraph(data: Record<string, MenuLevel>): {
         const parentId = parentNode ? parentNode.source : null;
         const yPos = parentId
           ? calculateYPosition(parentId, i, menuLevels.length)
-          : i * 100;
+          : i * 150;
 
         const xPos = parseInt(level) * 250;
 

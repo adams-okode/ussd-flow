@@ -3,7 +3,7 @@
   <div v-if="previewSideNavToggle">
     <aside
       id="logo-sidebar"
-      class="fixed left-0 z-40 resizable shadow-md bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+      class="fixed left-0 z-40 resizable shadow-md bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-slate-800 dark:border-slate-700"
       aria-label="Sidebar"
       :style="{
         width: width + 'px',
@@ -15,7 +15,7 @@
     >
       <slot name="content">
         <div
-          class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+          class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700"
         >
           <h5
             class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
@@ -61,13 +61,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount, Ref } from "vue";
+import { ref, onMounted, onBeforeUnmount, Ref } from "vue";
 import { useMenuStore } from "../stores/menu";
 import { storeToRefs } from "pinia";
 import Prism from "prismjs";
 
 const menuStore = useMenuStore();
-const { mainMenu, previewSideNavToggle } = storeToRefs(menuStore);
+const { previewSideNavToggle } = storeToRefs(menuStore);
 const { hidePreviewSideNav } = menuStore;
 
 const codeBlock = ref<HTMLElement | null>(null);
@@ -77,7 +77,7 @@ const width = ref(1000); // Initial width of the resizable div
 const isResizing = ref(false);
 const resizableBox: Ref<any> = ref(null);
 
-const startResize = (event: any) => {
+const startResize = () => {
   isResizing.value = true;
   document.addEventListener("mousemove", resize);
   document.addEventListener("mouseup", stopResize);
