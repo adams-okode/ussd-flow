@@ -20,7 +20,6 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
-
 jobs:
   build-deploy:
     environment:
@@ -37,18 +36,18 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          working-directory: ./flow-ui
+        run: npm install
+        working-directory: ./flow-ui
 
       - name: Build project
         run: npm run build
         working-directory: ./flow-ui
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v1
         with:
-            path: './flow-ui/dist'
+          path: './flow-ui/dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v1
