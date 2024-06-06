@@ -2,7 +2,7 @@ import { defineConfig } from "vitepress";
 
 // docs/.vitepress/config.js
 export default defineConfig({
-  base: "/ussd-flow/docs/",
+  base: process.env.VITE_BASE_URL,
   title: "My Project Documentation",
   description: "A VitePress site for my existing project",
   themeConfig: {
