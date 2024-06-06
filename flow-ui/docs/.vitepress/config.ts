@@ -8,15 +8,16 @@ export default defineConfig({
   themeConfig: {
     nav: [
       {
+        text: "Get started",
+        link: "/guide/ussd-intro",
+      },
+      {
         text: "Menu Builder",
         link: "https://adams-okode.github.io/ussd-flow/",
       },
     ],
     sidebar: {
-      "/": [
-        {
-          link: "index",
-        },
+      "/guide": [
         {
           text: "USSD",
           items: [{ text: "USSD Intro", link: "/guide/ussd-intro" }],

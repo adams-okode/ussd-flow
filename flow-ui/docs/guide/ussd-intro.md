@@ -10,6 +10,10 @@ The Basic USSD Flow usually take the approach below;
 - The application processes the requests it receives and sends back a valid response.
 - The feedback is processed by the MNO and sent back to the mobile phone.
 
+## Purpose:
+
+USSD Flow aims to streamline and help you quickly bootstrap the development of an interactive USSD services, making it easier for developers to build robust applications for various use cases, such as mobile banking, customer support, and information services.
+
 ## Getting Started
 
 USSD is session driven, What does this mean ?, well whenever you dial \*XXX# a session with a unique Id is created and maintained to allow interaction of the end device and the remote API. [The session typically lasts 180s for most MNOs in Kenya ](https://help.africastalking.com/en/articles/1284071-what-is-the-duration-of-a-ussd-session-for-kenyan-telcos) it may be different for MNOs in other countries. As the developer, you'll need to keep track of the session and be cautious of the time limit to ensure that menus, as well as responses, are served faster and better to ensure a seamless user experience.
