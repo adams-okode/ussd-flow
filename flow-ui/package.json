@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "docs:dev": "vitepress dev docs",
+    "docs:preview": "vitepress preview docs",
     "build": "run-s build:vue build:docs merge:build",
     "build:docs": "vitepress build docs",
     "merge:build": "node merge-build.js",

@@ -3,15 +3,42 @@ import { defineConfig } from "vitepress";
 // docs/.vitepress/config.js
 export default defineConfig({
   base: process.env.VITE_DOCS_BASE_URL,
-  title: "My Project Documentation",
+  title: "USSD Flow",
   description: "A VitePress site for my existing project",
   themeConfig: {
-    nav: [{ text: "Guide", link: "/guide/getting-started" }],
+    nav: [
+      {
+        text: "Menu Builder",
+        link: "https://adams-okode.github.io/ussd-flow/",
+      },
+    ],
     sidebar: {
-      "/guide/": [
+      "/": [
+        {
+          link: "index",
+        },
+        {
+          text: "USSD",
+          items: [{ text: "USSD Intro", link: "/guide/ussd-intro" }],
+        },
         {
           text: "Guide",
-          items: [{ text: "Fast API", link: "/guide/fast-api" }],
+          items: [
+            { text: "Intro to USSD Flow", link: "/guide/ussd-flow" },
+            { text: "Fast API", link: "/guide/fast-api" },
+            { text: "Django", link: "/guide/django-api" },
+            { text: "Flask", link: "/guide/flask-api" },
+          ],
+        },
+        {
+          text: "Menus",
+          items: [
+            {
+              text: "Intro to dynamic menus",
+              link: "/guide/dynamic-menu-intro",
+            },
+            { text: "Menu builder", link: "/guide/menu-builder" },
+          ],
         },
       ],
     },

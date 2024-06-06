@@ -50,13 +50,3 @@ request = IngressData(
 response = ussd_service.ingress(request)
 print(response)
 ```
-
-## Contributing
-
-We welcome contributions to UssdFlow! If you have suggestions, bug reports, or want to contribute code, please check our [Contributing Guidelines](./CONTRIBUTING.md).
-
-## License
-
-UssdFlow is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
-
-By following this documentation, you should be able to integrate UssdFlow with Flask, FastAPI, and Django to create, manage, and serve USSD menus efficiently.
