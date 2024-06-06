@@ -35,11 +35,6 @@ jobs:
         with:
           node-version: 18
 
-      - name: Set environment variables
-        run: |
-          echo "VITE_BASE_URL=${{ env.VITE_BASE_URL }}" >> $GITHUB_ENV
-          echo "VITE_DOCS_BASE_URL=${{ env.VITE_DOCS_BASE_URL }}" >> $GITHUB_ENV
-
       - name: Install dependencies
         run: npm install
         working-directory: ./flow-ui
@@ -47,6 +42,10 @@ jobs:
       - name: Build project
         run: npm run build
         working-directory: ./flow-ui
+        env:
+          VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
+          VITE_DOCS_BASE_URL: ${{ vars.VITE_DOCS_BASE_URL }}
+
 
       - name: List build output
         run: ls -R ./flow-ui/deploy
