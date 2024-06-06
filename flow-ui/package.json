@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "run-s build:vue build:docs merge:build",
+    "build:docs": "vitepress build docs",
+    "merge:build": "node merge-build.js",
+    "build:vue": "vue-tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -20,21 +23,28 @@
     "@vueuse/components": "^10.10.0",
     "@vueuse/core": "^10.10.0",
     "flowbite": "^2.3.0",
+    "fs-extra": "^11.2.0",
     "pinia": "^2.1.7",
     "prismjs": "^1.29.0",
     "vee-validate": "^4.13.0",
     "vue": "^3.4.21",
+    "vue-markdown-render": "^2.2.1",
+    "vue-router": "^4.3.2",
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/markdown-it": "^14.1.1",
+    "@types/node": "^20.14.2",
     "@types/prismjs": "^1.26.4",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.19",
+    "npm-run-all": "^4.1.5",
     "postcss": "^8.4.38",
     "sass": "^1.77.2",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vitepress": "^1.2.3",
     "vue-tsc": "^2.0.6"
   }
 }

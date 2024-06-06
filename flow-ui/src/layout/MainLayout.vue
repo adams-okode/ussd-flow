@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SideBar from "../widgets/SideBar.vue";
+
 import { onMounted, ref } from "vue";
 import {
   initAccordions,
@@ -73,16 +75,16 @@ onMounted(() => {
             </span>
           </a>
           <div class="flex items-center lg:order-2">
-            <a
-              href="#"
+            <!-- <router-link
+              :to="{ name: 'documentation' }"
               class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
-              >Docs</a
+              >Docs</router-link
             >
             <a
               href="#"
               class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
               >Get started</a
-            >
+            > -->
 
             <button
               ref="themeToggleBtn"
@@ -106,13 +108,9 @@ onMounted(() => {
       </div>
     </nav>
 
-    <slot name="side-bar"> </slot>
+    <side-bar />
 
-    <main style="height: calc(100vh - 70px)">
-      <slot name="flow">
-        <!-- Main modal -->
-      </slot>
-    </main>
+    <router-view />
   </div>
 </template>
 

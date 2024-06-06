@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import MenuBuilder from "./widgets/MenuBuilder.vue";
 import MainLayout from "./layout/MainLayout.vue";
 import PhoneDialog from "./widgets/PhoneDialog.vue";
-import SideBar from "./widgets/SideBar.vue";
 import ToastComponent from "./components/ToastComponent.vue";
 
 import { mdiPlus, mdiEyeOutline, mdiDownloadBoxOutline } from "@mdi/js";
@@ -90,15 +88,8 @@ function createMenuDialog() {
   </div>
 
   <phone-dialog></phone-dialog>
-  <main-layout>
-    <template #side-bar>
-      <side-bar></side-bar>
-    </template>
 
-    <template #flow>
-      <menu-builder></menu-builder>
-    </template>
-  </main-layout>
+  <main-layout> </main-layout>
 </template>
 
 <style scoped></style>

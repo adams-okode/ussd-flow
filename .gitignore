@@ -42,3 +42,5 @@ cache.json
 /releases/*
 pip-wheel-metadata
 /poetry.toml
+
+/flow-ui/deploy
