@@ -1,24 +1,58 @@
 ---
-home: true
-heroImage: /images/logo.webp
-heroText: USSD Flow Documentation
-tagline: Comprehensive guide to creating dynamic USSD applications
-actionText: Get Started →
-actionLink: /guide/getting-started
-features:
-  - title: Dynamic Menus
-    details: Easily define and manage USSD menus with dynamic content and options.
-  - title: Seamless Integration
-    details: Integrates smoothly with various USSD gateways for reliable services.
-  - title: Efficient Caching
-    details: Utilizes Redis for high-performance caching, ensuring quick session management.
-  - title: Multi-Framework Support
-    details: Compatible with FastAPI, Django, and Flask for flexible development.
-  - title: User Session Management
-    details: Tracks user progress through USSD menus, ensuring a seamless experience.
-  - title: Robust Error Handling
-    details: Ensures smooth user interactions with comprehensive error management.
-footer: MIT Licensed | Copyright © 2024
+layout: home
+
+hero:
+  name: USSD Flow
+  image:
+    src: /images/default.png
+    alt: USSD Flow
+  actions:
+    - theme: brand
+      text: Get Started
+      link: /guide/ussd-intro
+    - theme: alt
+      icon: https://github.githubassets.com/favicons/favicon.svg
+      text: View on GitHub
+      link: https://github.com/vuejs/vitepress
 ---
 
-Welcome
+ <Badge type="info" text="default" />
+
+## Getting Started
+
+You can get started using USSD Flow right away using `pip install `!
+
+```bash
+pip install ussdflow
+```
+
+Here’s a quick example to get you started with UssdFlow:
+
+```python
+from ussdflow import CacheManager, IngressData, USSDService
+
+# Initialize the cache manager
+
+cache_manager = CacheManager(cache_type="redis", host="localhost", port=6379)
+
+# Initialize the USSD service
+
+ussd_service = USSDService(
+    menu_file_path="path/to/your/menu.json",
+    cache_manager=cache_manager
+)
+
+# Sample USSD request
+
+request = IngressData(
+    session_id="1234",
+    service_code="*123#",
+    phone_number="254712345678",
+    text=""
+)
+
+# Process the request
+
+response = ussd_service.ingress(request)
+print(response)
+```

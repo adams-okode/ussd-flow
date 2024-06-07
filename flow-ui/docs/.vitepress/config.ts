@@ -6,6 +6,7 @@ export default defineConfig({
   title: "USSD Flow",
   description: "A VitePress site for my existing project",
   themeConfig: {
+    logo: "/images/default.png",
     nav: [
       {
         text: "Get started",
@@ -16,6 +17,10 @@ export default defineConfig({
         link: "https://adams-okode.github.io/ussd-flow/",
       },
     ],
+    footer: {
+      message: "Released under the MIT License.",
+      copyright: `Copyright © ${new Date().getFullYear()}. All rights reserved.`,
+    },
     sidebar: {
       "/guide": [
         {
@@ -39,6 +44,8 @@ export default defineConfig({
               link: "/guide/dynamic-menu-intro",
             },
             { text: "Menu builder", link: "/guide/menu-builder" },
+            { text: "Action Registry", link: "" },
+            { text: "Caching & USSD Session", link: "" },
           ],
         },
       ],
