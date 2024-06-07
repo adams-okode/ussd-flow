@@ -1,6 +1,6 @@
 import importlib
 import json
-from typing import Dict
+from typing import Any, Dict
 
 from lib.cache import CacheManager
 from lib.models import IngressData, MenuLevel, MenuOption, USSDSession
@@ -13,10 +13,11 @@ class USSDService:
         menu_file_path: str = "data/sample.json",
         cache_manager: CacheManager = CacheManager(cache_type="file"),
         actions_registry: ActionRegistry = ActionRegistry(),
-        db_context=None,  # Add db_context parameter
+        db_context: Any = None,  # Add db_context parameter
     ):
         """
-        Initialize the USSDService with menu file path, cache manager, actions registry,
+        Initialize the USSDService with menu file path, cache manager,
+        actions registry,
         and database context.
 
         :param menu_file_path: Path to the JSON file containing menu definitions.
@@ -32,8 +33,7 @@ class USSDService:
 
     def load_menus(self) -> Dict[str, MenuLevel]:
         """
-        Load menus from a JSON file and return them as a dictionary
-        of MenuLevel objects.
+        Load menus from a JSON file.
 
         :return: Dictionary of menu levels.
         """
@@ -124,7 +124,10 @@ class USSDService:
         """
         levels = session.text.split("*")
         last_value = levels[-1]
-        menu_level = menus[str(session.current_menu_level)]
+        menu_level = menus.get(str(session.current_menu_level))
+
+        if not menu_level:
+            raise Exception("Invalid menu level")
 
         if int(last_value) <= menu_level.max_selections:
             menu_option = menu_level.menu_options[int(last_value) - 1]
@@ -190,10 +193,9 @@ class USSDService:
 
             # Call the function with provided arguments
             variables_map = func_to_call(session, self._db_context)
+
         else:
-            raise ValueError(
-                f"Function '{menu_option.action}' is not registered in the registry."
-            )
+            raise Exception(f"Function '{menu_option.action}' is not registered.")
 
         return "{} {}".format(
             "CON" if con_end else "END",
@@ -209,7 +211,6 @@ class USSDService:
         :param response: Response string with placeholders.
         :return: Response string with placeholders replaced by actual values.
         """
-
         for key, value in variables_map.items():
             response = response.replace(f"${{{key}}}", str(value))
         return response
