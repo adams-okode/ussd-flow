@@ -13,16 +13,21 @@ class USSDService:
         menu_file_path: str = "data/sample.json",
         cache_manager: CacheManager = CacheManager(cache_type="file"),
         actions_registry: ActionRegistry = ActionRegistry(),
+        db_context=None,  # Add db_context parameter
     ):
         """
-        Initialize the USSDService with menu file path and cache type.
+        Initialize the USSDService with menu file path, cache manager, actions registry,
+        and database context.
 
         :param menu_file_path: Path to the JSON file containing menu definitions.
-        :param cache_type: Type of cache to use for session management.
+        :param cache_manager: CacheManager instance for session management.
+        :param actions_registry: ActionRegistry instance for action handling.
+        :param db_context: Database context to be passed to action functions.
         """
         self.menu_file_path = menu_file_path
         self._cache_manager = cache_manager
         self._action_registry = actions_registry
+        self._db_context = db_context  # Store db_context
         self._ussd_session = {}
 
     def load_menus(self) -> Dict[str, MenuLevel]:
@@ -136,7 +141,7 @@ class USSDService:
         :return: Response string to be sent back to the user.
         """
         if menu_option.type == "response":
-            return self.process_menu_option_responses(menu_option)
+            return self.process_menu_option_responses(session, menu_option)
         elif menu_option.type == "level":
             self.update_session_menu_level(session, menu_option.next_menu_level)
             return self.get_menu(menu_option.next_menu_level)
@@ -158,10 +163,13 @@ class USSDService:
             menus[str(menu_level)].text,
         )
 
-    def process_menu_option_responses(self, menu_option: MenuOption) -> str:
+    def process_menu_option_responses(
+        self, session: USSDSession, menu_option: MenuOption
+    ) -> str:
         """
         Process the responses for the selected menu option.
 
+        :param session: USSDSession object.
         :param menu_option: MenuOption object selected by the user.
         :return: Response string to be sent back to the user.
         """
@@ -181,7 +189,7 @@ class USSDService:
             func_to_call = getattr(module, menu_option.action)
 
             # Call the function with provided arguments
-            variables_map = func_to_call()
+            variables_map = func_to_call(session, self._db_context)
         else:
             raise ValueError(
                 f"Function '{menu_option.action}' is not registered in the registry."

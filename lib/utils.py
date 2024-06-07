@@ -27,6 +27,10 @@ class ActionRegistry:
         module_name = inspect.getmodule(func).__name__
         self._registry[func.__name__] = (func, module_name)
 
+    def register_function(self, func_name: str, func: Callable):
+        module_name = inspect.getmodule(func).__name__
+        self._registry[func_name] = (func, module_name)
+
     def get_decorated_functions(self) -> Dict[str, Tuple[Callable, str]]:
         """
         Get the registered handler functions.

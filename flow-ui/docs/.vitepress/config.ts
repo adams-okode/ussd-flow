@@ -6,7 +6,7 @@ export default defineConfig({
   title: "USSD Flow",
   description: "A VitePress site for my existing project",
   themeConfig: {
-    logo: "/images/default.png",
+    logo: "/images/favicon.png",
     nav: [
       {
         text: "Get started",
@@ -44,8 +44,8 @@ export default defineConfig({
               link: "/guide/dynamic-menu-intro",
             },
             { text: "Menu builder", link: "/guide/menu-builder" },
-            { text: "Action Registry", link: "" },
-            { text: "Caching & USSD Session", link: "" },
+            { text: "Action Registry", link: "/guide/action-registry" },
+            { text: "Caching & USSD Session", link: "/guide/caching" },
           ],
         },
       ],

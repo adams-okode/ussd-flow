@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 from pydantic import BaseModel
 
@@ -29,6 +29,7 @@ class USSDSession(BaseModel):
     text: str
     previous_menu_level: Union[int, str, None]
     current_menu_level: Union[int, str, None]
+    metadata: Optional[Any] = None
 
 
 class IngressData(BaseModel):
