@@ -13,7 +13,7 @@ hero:
     - theme: alt
       icon: https://github.githubassets.com/favicons/favicon.svg
       text: View on GitHub
-      link: https://github.com/vuejs/vitepress
+      link: https://github.com/adams-okode/ussd-flow
 ---
 
  <Badge type="info" text="default" />

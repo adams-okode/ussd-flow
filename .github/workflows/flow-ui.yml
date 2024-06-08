@@ -2,8 +2,7 @@ name: Deploy UI to gh-pages
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches: ["main"]
 
   workflow_dispatch:
 
@@ -22,7 +21,7 @@ concurrency:
 jobs:
   build-deploy:
     environment:
-      name: github-pages
+      name: prod
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
