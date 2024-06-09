@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 
 class MenuOption(BaseModel):
+    id: int
     type: str
     response: Optional[str]
     next_menu_level: Optional[Union[int, str, None]]

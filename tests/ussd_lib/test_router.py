@@ -164,6 +164,7 @@ def test_process_menu_option_response(
         mock_import_module.return_value.process_account_phone_number = mock_function
 
         menu_option = MenuOption(
+            id=1,
             type="response",
             response="Your Phone Number is ${phone_number}",
             next_menu_level=None,
@@ -176,7 +177,7 @@ def test_process_menu_option_response(
 
 def test_process_menu_option_level(ussd_service, sample_session):
     menu_option = MenuOption(
-        type="level", response=None, next_menu_level="2", action=None
+        id=1, type="level", response=None, next_menu_level="2", action=None
     )
 
     with patch.object(
