@@ -6,6 +6,7 @@
     "con_end": true,
     "menu_options": [
       {
+        "id": 1,
         "type": "level",
         "response": null,
         "next_menu_level": 2,
@@ -13,6 +14,7 @@
         "action": null
       },
       {
+        "id": 2,
         "type": "response",
         "response": "Your Phone Number is ${phone_number}",
         "next_menu_level": null,
@@ -29,6 +31,7 @@
     "text": "Choose account information you want to view\n1. Account number\n2. Account balance",
     "menu_options": [
       {
+        "id": 1,
         "type": "response",
         "response": "Your account number is ${account_number}",
         "next_menu_level": null,
@@ -36,6 +39,7 @@
         "action": "process_account_number"
       },
       {
+        "id": 2,
         "type": "response",
         "response": "Your Account balance is ${account_balance}",
         "next_menu_level": null,

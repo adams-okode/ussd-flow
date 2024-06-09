@@ -130,8 +130,14 @@ class USSDService:
             raise Exception("Invalid menu level")
 
         if int(last_value) <= menu_level.max_selections:
-            menu_option = menu_level.menu_options[int(last_value) - 1]
-            return self.process_menu_option(session, menu_option)
+
+            filtered_options = list(
+                filter(lambda x: x.id == int(last_value), menu_level.menu_options)
+            )
+
+            if len(filtered_options) > 0:
+                menu_option = filtered_options[0]
+                return self.process_menu_option(session, menu_option)
 
         return "CON Invalid selection"
 
@@ -149,7 +155,7 @@ class USSDService:
             self.update_session_menu_level(session, menu_option.next_menu_level)
             return self.get_menu(menu_option.next_menu_level)
         else:
-            return "CON Invalid menu option"
+            return "CON Invalid option"
 
     def get_menu(self, menu_level: str) -> str:
         """
