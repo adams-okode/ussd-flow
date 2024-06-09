@@ -13,6 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
@@ -28,8 +29,8 @@ jobs:
         with:
           extra_args: >-
             --color=always
-            --from-ref ${{ github.event.pull_request.base.sha != '' && github.event.pull_request.base.sha || 'origin/main' }}
-            --to-ref ${{ github.event.pull_request.head.sha != '' && github.event.pull_request.head.sha || 'HEAD' }}
+            --from-ref ${{ github.event.pull_request.base.sha || 'origin/main' }}
+            --to-ref ${{ github.event.pull_request.head.sha || 'HEAD' }}
 
       - name: Test with pytest
         run: |
