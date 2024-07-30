@@ -107,10 +107,7 @@ class USSDService:
         if request.text:
             return self.get_next_menu_item(session, menus)
         else:
-            con_end = menus[session.current_menu_level].con_end
-            return "{} {}".format(
-                "CON" if con_end else "END", menus[session.current_menu_level].text
-            )
+            return self.get_menu(session, menus[session.current_menu_level])
 
     def get_next_menu_item(
         self, session: USSDSession, menus: Dict[str, MenuLevel]
@@ -153,11 +150,11 @@ class USSDService:
             return self.process_menu_option_responses(session, menu_option)
         elif menu_option.type == "level":
             self.update_session_menu_level(session, menu_option.next_menu_level)
-            return self.get_menu(menu_option.next_menu_level)
+            return self.get_menu(session, menu_option.next_menu_level)
         else:
             return "CON Invalid option"
 
-    def get_menu(self, menu_level: str) -> str:
+    def get_menu(self, session: USSDSession, menu_level: str) -> str:
         """
         Get the text of the specified menu level.
 
@@ -165,11 +162,50 @@ class USSDService:
         :return: Text of the specified menu level.
         """
         menus = self.load_menus()
-        con_end = menus[str(menu_level)].con_end
+        current_menu_level = menus[str(menu_level)]
+
+        if current_menu_level.action is not None:
+            return self.process_menu_level_text(session, current_menu_level)
+
+        return "{} {}".format(
+            "CON" if current_menu_level.con_end else "END",
+            menus[str(menu_level)].text,
+        )
+
+    def process_menu_level_text(
+        self, session: USSDSession, menu_level: MenuOption
+    ) -> str:
+        """
+        Process the responses for the selected menu option.
+
+        :param session: USSDSession object.
+        :param menu_option: MenuOption object selected by the user.
+        :return: Response string to be sent back to the user.
+        """
+        variables_map = {}
+        response = menu_level.text
+        con_end = menu_level.con_end
+
+        functions = self._action_registry.get_decorated_functions()
+
+        if menu_level.action in functions:
+            func, module_name = functions[menu_level.action]
+
+            # Dynamically import the module containing the function
+            module = importlib.import_module(module_name)
+
+            # Get the function from the module
+            func_to_call = getattr(module, menu_level.action)
+
+            # Call the function with provided arguments
+            variables_map = func_to_call(session, self._db_context)
+
+        else:
+            raise Exception(f"Function '{menu_level.action}' is not registered.")
 
         return "{} {}".format(
             "CON" if con_end else "END",
-            menus[str(menu_level)].text,
+            self.replace_variable(variables_map, response),
         )
 
     def process_menu_option_responses(
