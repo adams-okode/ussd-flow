@@ -2,7 +2,7 @@ import importlib
 import inspect
 import pkgutil
 
-from lib.utils import ActionRegistry
+from ussdflow.utils import ActionRegistry
 
 action_registry = ActionRegistry()
 

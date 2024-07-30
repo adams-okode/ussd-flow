@@ -8,8 +8,7 @@ import redis
 from sqlalchemy import Column, MetaData, String, Table
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import SQLAlchemyError
-
-from lib.models import USSDSession
+from ussdflow.models import USSDSession
 
 
 class Cache(ABC):

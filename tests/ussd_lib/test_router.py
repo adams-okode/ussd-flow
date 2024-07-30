@@ -3,9 +3,8 @@ import json
 from unittest.mock import MagicMock, patch
 
 import pytest
-
-from lib.models import IngressData, MenuLevel, MenuOption, USSDSession
-from lib.router import USSDService
+from ussdflow.models import IngressData, MenuLevel, MenuOption, USSDSession
+from ussdflow.router import USSDService
 
 
 @pytest.fixture

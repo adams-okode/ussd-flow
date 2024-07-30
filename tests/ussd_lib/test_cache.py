@@ -2,9 +2,8 @@ import json
 from unittest.mock import MagicMock
 
 import pytest
-
-from lib.cache import CacheManager, PostgresCache
-from lib.models import USSDSession
+from ussdflow.cache import CacheManager, PostgresCache
+from ussdflow.models import USSDSession
 
 
 @pytest.fixture

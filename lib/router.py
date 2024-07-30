@@ -2,9 +2,9 @@ import importlib
 import json
 from typing import Any, Dict
 
-from lib.cache import CacheManager
-from lib.models import IngressData, MenuLevel, MenuOption, USSDSession
-from lib.utils import ActionRegistry
+from ussdflow.cache import CacheManager
+from ussdflow.models import IngressData, MenuLevel, MenuOption, USSDSession
+from ussdflow.utils import ActionRegistry
 
 
 class USSDService:

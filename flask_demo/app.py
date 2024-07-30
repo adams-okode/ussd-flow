@@ -1,8 +1,7 @@
 from urllib.parse import parse_qs, unquote_plus
 
 from flask import Flask, Response, request
-
-from lib import IngressData, USSDService
+from ussdflow import IngressData, USSDService
 
 app = Flask(__name__)
 

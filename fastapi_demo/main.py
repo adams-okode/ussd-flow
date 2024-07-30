@@ -4,10 +4,10 @@ from typing import Any
 from urllib.parse import parse_qs, unquote_plus
 
 from fastapi import Body, FastAPI, Request, Response
+from ussdflow.models import IngressData
+from ussdflow.router import USSDService
 
 from fastapi_demo.actions import get_action_registry
-from lib.models import IngressData
-from lib.router import USSDService
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
