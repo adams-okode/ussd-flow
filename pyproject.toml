@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ussdflow"
-version = "0.1.9"
+version = "0.1.10"
 description = ""
 authors = ["Adams Okode <adamsokode@gmail.com>"]
 readme = "README.md"
