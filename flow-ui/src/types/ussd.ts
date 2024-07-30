@@ -1,4 +1,6 @@
 export interface MenuOption {
+  id: number;
+  numberedDisplayText?: string;
   type: string;
   response?: string;
   nextMenuLevel?: string | null;
@@ -9,6 +11,7 @@ export interface MenuOption {
 export interface MenuLevel {
   id: string;
   menuLevel: number | string;
+  intro?: string;
   text: string;
   menuOptions: MenuOption[];
   maxSelections: number | string;
