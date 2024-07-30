@@ -5,7 +5,7 @@ description = ""
 authors = ["Adams Okode <adamsokode@gmail.com>"]
 readme = "README.md"
 packages = [
-    { include = "lib" }
+    { include = "ussdflow" }
 ]
 
 [tool.poetry.dependencies]
