@@ -8,6 +8,7 @@ import redis
 from sqlalchemy import Column, MetaData, String, Table
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import SQLAlchemyError
+
 from ussdflow.models import USSDSession
 
 
